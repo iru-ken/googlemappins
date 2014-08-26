@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- derived from the google map API sample and modified by Ken Hubbell for Ingersoll Rand plc 2014 -->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Classroom Locations and Usage Rates</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    
+    <!-- external javascript(.js) file location information -->
+    <script src="locations.js"></script>
+    
+    <script>
+		function initialize() {
+			//gets centerofworld data from locations.js file
+ 			var mapCenter = new google.maps.LatLng(centerofworld[0],centerofworld[1]);
+  			var mapOptions = {
+    			zoom: 3,
+    			center: mapCenter
+  			}
+  			var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+			//load all the locations markers and classes data from the locations.js file
+			
+			for(i=0;i<locations.length;i++){
+				var currentLoc = new google.maps.LatLng(locations[i][1],locations[i][2]);
+				var currentClassDescriptions = locations[i][3];
+				var titleString = locations[i][0];
+				
+				for(c=0;c<currentClassDescriptions.length;c++){
+					
+					//add linefeed
+					titleString = titleString + "\n";
+					 
+					titleString = titleString + currentClassDescriptions[c][0] + ": " + currentClassDescriptions[c][1];
+				}
+				
+  				var marker = new google.maps.Marker({
+     				position: currentLoc,
+      				map: map,
+      				title: titleString
+  				});
+			}
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
